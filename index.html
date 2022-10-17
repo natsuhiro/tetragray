@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tetrahedral DNA Gray code</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="https://unpkg.com/three@0.137.4/build/three.js"></script>
+    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>    
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="module">
+      init();
+
+      function init(){
+	  const width=960;
+	  const height=540;
+	  const canvasElement=document.getElementById("container");
+
+	  const renderer=new THREE.WebGLRenderer();
+	  renderer.setPixelRatio(window.devicePixelRatio);
+	  renderer.setSize( window.innerWidth, window.innerHeight );
+	  //renderer.setSize(width,height);
+	  container.appendChild( renderer.domElement );	  
+
+
+	  const scene=new THREE.Scene();
+
+	  const camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,10000);
+	  camera.position.set(0,0,1000);
+
+	  const controls=new THREE.OrbitControls(camera, canvasElement);
+	  controls.enablePan=false;
+	  controls.enableDamping=true;
+	  controls.dampingFactor=0.2;
+
+
+	  const geometry=new THREE.TetrahedronGeometry(300,0);
+	  const uvatt=geometry.getAttribute('uv');
+	  const xpos=[0.75,0.5,0.25,0.5,0.25,0,0.5,1,0.75,0.5,0.75,0.25],
+		ypos=[0.5,1,0.5,0,0.5,0,0,0,0.5,0,0.5,0.5];
+	  for(let i=0;i<12;++i){
+	      uvatt.setXY(i,xpos[i],ypos[i]);
+	  }
+
+	  const loader=new THREE.TextureLoader();
+	  const texture=loader.load('human.png');
+
+	  const material=new THREE.MeshStandardMaterial({map: texture,side: THREE.DoubleSide});
+	  const mesh=new THREE.Mesh(geometry, material);
+	  scene.add(mesh);
+
+	  const ambient=new THREE.AmbientLight(0xFFFFFF,1);
+	  scene.add(ambient);
+
+	  tick();
+
+	  function tick() {
+	      controls.update();
+	      renderer.render(scene, camera);	
+	      requestAnimationFrame(tick);
+	  }    
+      }
+    </script>
+    
+  </body>
+</html>
