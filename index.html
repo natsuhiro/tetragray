@@ -4,23 +4,38 @@
     <title>Tetrahedral DNA Gray code</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <script src="https://unpkg.com/three@0.137.4/build/three.js"></script>
-    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>    
   </head>
-  <body>
+  <body bgcolor="black">
     <div id="container"></div>
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+	  "imports": {
+	      "three": "https://unpkg.com/three@0.145.0/build/three.module.js",
+	      "orbitcontrols": "https://unpkg.com/three@0.145.0/examples/jsm/controls/OrbitControls.js",
+	      "gui": "https://unpkg.com/three@0.145.0/examples/jsm/libs/lil-gui.module.min.js"
+	  }
+      }
+    </script>    
     <script type="module">
+      import * as THREE from "three";
+      import { GUI } from "gui";
+      import { OrbitControls } from "orbitcontrols";
+
+      let texture={};
+      let material;
+      let texturefile={"None":"none.png","Human":"human.png","Chimpanzee":"chimpanzee.png","Dog":"dog.png",
+		       "Chicken":"chicken.png","Frog":"frog.png","Zebrafish":"zebrafish.png","Fruitfly":"fruitfly.png",
+		       "Honeybee":"honeybee.png","Ecoli":"Ecoli.png","Lcasei":"Lcasei.png","COVID-19":"covid19.png"};
+      
       init();
 
       function init(){
-	  const width=960;
-	  const height=540;
 	  const canvasElement=document.getElementById("container");
 
 	  const renderer=new THREE.WebGLRenderer();
 	  renderer.setPixelRatio(window.devicePixelRatio);
 	  renderer.setSize( window.innerWidth, window.innerHeight );
-	  //renderer.setSize(width,height);
 	  container.appendChild( renderer.domElement );	  
 
 
@@ -29,7 +44,7 @@
 	  const camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,10000);
 	  camera.position.set(0,0,1000);
 
-	  const controls=new THREE.OrbitControls(camera, canvasElement);
+	  const controls=new OrbitControls(camera, canvasElement);
 	  controls.enablePan=false;
 	  controls.enableDamping=true;
 	  controls.dampingFactor=0.2;
@@ -44,14 +59,18 @@
 	  }
 
 	  const loader=new THREE.TextureLoader();
-	  const texture=loader.load('human.png');
+	  for(let k in texturefile){
+	      texture[k]=loader.load(texturefile[k]);
+	  }
 
-	  const material=new THREE.MeshStandardMaterial({map: texture,side: THREE.DoubleSide});
+	  material=new THREE.MeshStandardMaterial({map: texture["None"],side: THREE.DoubleSide});
 	  const mesh=new THREE.Mesh(geometry, material);
 	  scene.add(mesh);
 
 	  const ambient=new THREE.AmbientLight(0xFFFFFF,1);
 	  scene.add(ambient);
+
+	  createPanel();
 
 	  tick();
 
@@ -60,6 +79,25 @@
 	      renderer.render(scene, camera);	
 	      requestAnimationFrame(tick);
 	  }    
+      }
+
+      function createPanel(){
+	  const panel=new GUI();
+	  const genomes=["None","Human","Chimpanzee","Dog","Chicken","Frog","Zebrafish","Fruitfly",
+			 "Honeybee","Ecoli","Lcasei","COVID-19"];
+	  const setting={};
+	  const contlist=[];
+	  for(let i=0;i<genomes.length;++i){
+	      setting[genomes[i]]=function(){
+		  material.map=texture[genomes[i]];
+		  for(let j=0;j<contlist.length;++j){
+		      contlist[j].enable(contlist[j].property!=genomes[i]);		      
+		  }
+	      }
+	      contlist.push(panel.add(setting,genomes[i]));
+	  }
+	  contlist[0].enable(false);
+
       }
     </script>
     
