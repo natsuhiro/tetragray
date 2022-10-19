@@ -67,7 +67,7 @@
 	      texture[k]=loader.load(texturefile[k]);
 	  }
 
-	  material=new THREE.MeshStandardMaterial({map: texture["None"],side: THREE.DoubleSide});
+	  material=new THREE.MeshStandardMaterial({map: texture["Human"],side: THREE.DoubleSide});
 	  const mesh=new THREE.Mesh(geometry, material);
 	  scene.add(mesh);
 
@@ -99,7 +99,7 @@
 	      }
 	      contlist.push(panel.add(setting,genomes[i]));
 	  }
-	  contlist[0].enable(false);
+	  contlist[1].enable(false);
 	  panel.close();
       }
     </script>
