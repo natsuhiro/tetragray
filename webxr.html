@@ -63,7 +63,11 @@
 
 	  material=new THREE.MeshStandardMaterial({map: texture["Human"],side: THREE.DoubleSide});
 	  const mesh=new THREE.Mesh(geometry, material);
-	  scene.add(mesh);
+	  //scene.add(mesh);
+
+	  const controller=renderer.xr.getControllerGrip(0);
+	  controller.add(mesh);
+	  scene.add(controller);
 
 	  const ambient=new THREE.AmbientLight(0xFFFFFF,1);
 	  scene.add(ambient);
