@@ -65,9 +65,10 @@
 	  const mesh=new THREE.Mesh(geometry, material);
 	  //scene.add(mesh);
 
-	  const controller=renderer.xr.getControllerGrip(0);
-	  controller.add(mesh);
-	  scene.add(controller);
+	  const controller=renderer.xr.getController(0);
+	  scene.add(controller);	  
+	  controller.add(mesh.clone());
+
 
 	  const ambient=new THREE.AmbientLight(0xFFFFFF,1);
 	  scene.add(ambient);
