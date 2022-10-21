@@ -48,7 +48,7 @@
 	  const camera=new THREE.PerspectiveCamera(90,window.innerWidth/window.innerHeight,0.1,1000);
 	  camera.position.set(0,1.6,3);
 
-	  const geometry=new THREE.TetrahedronGeometry(300,0);
+	  const geometry=new THREE.TetrahedronGeometry(30,0);
 	  const uvatt=geometry.getAttribute('uv');
 	  const xpos=[0.75,0.5,0.25,0.5,0.25,0,0.5,1,0.75,0.5,0.75,0.25],
 		ypos=[0.5,1,0.5,0,0.5,0,0,0,0.5,0,0.5,0.5];
@@ -65,7 +65,7 @@
 	  const mesh=new THREE.Mesh(geometry, material);
 	  //scene.add(mesh);
 
-	  const controller=renderer.xr.getController(0);
+	  const controller=renderer.xr.getController(1);
 	  scene.add(controller);	  
 	  controller.add(mesh.clone());
 
