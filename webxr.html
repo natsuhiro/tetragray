@@ -66,6 +66,7 @@
 	      texture[k]=loader.load(texturefile[k]);
 	  }
 
+	  world.rotateX(30);
 	  const wmaterial=new THREE.MeshStandardMaterial({map: texture["FIVE"],side: THREE.DoubleSide});
 	  const wmesh=new THREE.Mesh(world, wmaterial);
 	  scene.add(wmesh);
