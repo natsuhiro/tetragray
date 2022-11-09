@@ -65,11 +65,11 @@
 	  for(let k in texturefile){
 	      texture[k]=loader.load(texturefile[k]);
 	  }
-
+	  world.applyMatrix4(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1,0,-1).normalize(),Math.atan(Math.sqrt( 2 ))));
 	  const wmaterial=new THREE.MeshStandardMaterial({map: texture["FIVE"],side: THREE.DoubleSide});
 	  const wmesh=new THREE.Mesh(world, wmaterial);
-	  wmesh.rotation.set(0,0,0);
 	  scene.add(wmesh);
+	  
 
 	  material=new THREE.MeshStandardMaterial({map: texture["Human"],side: THREE.DoubleSide});
 	  const mesh=new THREE.Mesh(geometry, material);
