@@ -53,7 +53,7 @@
 
 
 	  const geometry=new THREE.TetrahedronGeometry(0.1,0);
-	  const world=new THREE.TetrahedronGeometry(10,0);
+	  const world=new THREE.TetrahedronGeometry(20,0);
 	  const uvatt=geometry.getAttribute('uv');
 	  const uvw=world.getAttribute('uv');
 	  for(let i=0;i<12;++i){
@@ -65,7 +65,7 @@
 	  for(let k in texturefile){
 	      texture[k]=loader.load(texturefile[k]);
 	  }
-	  world.applyMatrix4(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1,0,-1).normalize(),Math.atan(Math.sqrt( 2 ))));
+	  world.applyMatrix4(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1,0,-1).normalize(),Math.atan(Math.sqrt(2))));
 	  const wmaterial=new THREE.MeshStandardMaterial({map: texture["FIVE"],side: THREE.DoubleSide});
 	  const wmesh=new THREE.Mesh(world, wmaterial);
 	  scene.add(wmesh);
