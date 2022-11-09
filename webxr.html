@@ -28,7 +28,7 @@
       let material;
       let texturefile={"None":"none.png","Human":"human.png","Chimpanzee":"chimpanzee.png","Dog":"dog.png",
 		       "Chicken":"chicken.png","Frog":"frog.png","Zebrafish":"zebrafish.png","Fruitfly":"fruitfly.png",
-		       "Honeybee":"honeybee.png","Ecoli":"Ecoli.png","Lcasei":"Lcasei.png","COVID-19":"covid19.png"};
+		       "Honeybee":"honeybee.png","Ecoli":"Ecoli.png","Lcasei":"Lcasei.png","COVID-19":"covid19.png","FIVE":"five.png"};
       
       init();
 
@@ -48,18 +48,27 @@
 	  const camera=new THREE.PerspectiveCamera(90,window.innerWidth/window.innerHeight,0.1,1000);
 	  camera.position.set(0,1.6,3);
 
-	  const geometry=new THREE.TetrahedronGeometry(0.1,0);
-	  const uvatt=geometry.getAttribute('uv');
 	  const xpos=[0.75,0.5,0.25,0.5,0.25,0,0.5,1,0.75,0.5,0.75,0.25],
 		ypos=[0.5,1,0.5,0,0.5,0,0,0,0.5,0,0.5,0.5];
+
+
+	  const geometry=new THREE.TetrahedronGeometry(0.1,0);
+	  const world=new THREE.TetrahedronGeometry(10,0);
+	  const uvatt=geometry.getAttribute('uv');
+	  const uvw=world.getAttribute('uv');
 	  for(let i=0;i<12;++i){
 	      uvatt.setXY(i,xpos[i],ypos[i]);
+	      uvw.setXY(i,xpos[i],ypos[i]);	      
 	  }
 
 	  const loader=new THREE.TextureLoader();
 	  for(let k in texturefile){
 	      texture[k]=loader.load(texturefile[k]);
 	  }
+
+	  const wmaterial=new THREE.MeshStandardMaterial({map: texture["FIVE"],side: THREE.DoubleSide});
+	  const wmesh=new THREE.Mesh(world, wmaterial);
+	  scene.add(wmesh);
 
 	  material=new THREE.MeshStandardMaterial({map: texture["Human"],side: THREE.DoubleSide});
 	  const mesh=new THREE.Mesh(geometry, material);
